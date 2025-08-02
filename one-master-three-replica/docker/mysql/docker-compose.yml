@@ -1,0 +1,90 @@
+services:
+  one-master-three-replica-master:
+    image: mysql:9.4.0
+    container_name: one-master-three-replica-master
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: potatowoong_db
+    volumes:
+      - ./master/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./master/data:/var/lib/mysql
+      - ./ssl:/etc/mysql/ssl:ro
+    command:
+      --ssl-ca=/etc/mysql/ssl/ca.pem
+      --ssl-cert=/etc/mysql/ssl/server-cert.pem
+      --ssl-key=/etc/mysql/ssl/server-key.pem
+      --require_secure_transport=ON
+    ports:
+      - "3309:3306"
+    networks:
+      - mysql-replication
+
+  one-master-three-replica-replica1:
+    image: mysql:9.4.0
+    container_name: one-master-three-replica-replica1
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+    volumes:
+      - ./replica1/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./replica1/data:/var/lib/mysql
+      - ./ssl:/etc/mysql/ssl:ro
+    command:
+      --ssl-ca=/etc/mysql/ssl/ca.pem
+      --ssl-cert=/etc/mysql/ssl/server-cert.pem
+      --ssl-key=/etc/mysql/ssl/server-key.pem
+      --require_secure_transport=ON
+    ports:
+      - "3310:3306"
+    networks:
+      - mysql-replication
+
+  one-master-three-replica-replica2:
+    image: mysql:9.4.0
+    container_name: one-master-three-replica-replica2
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+    volumes:
+      - ./replica2/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./replica2/data:/var/lib/mysql
+      - ./ssl:/etc/mysql/ssl:ro
+    command:
+      --ssl-ca=/etc/mysql/ssl/ca.pem
+      --ssl-cert=/etc/mysql/ssl/server-cert.pem
+      --ssl-key=/etc/mysql/ssl/server-key.pem
+      --require_secure_transport=ON
+    ports:
+      - "3311:3306"
+    networks:
+      - mysql-replication
+
+  one-master-three-replica-replica3:
+    image: mysql:9.4.0
+    container_name: one-master-three-replica-replica3
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+    volumes:
+      - ./replica3/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./replica3/data:/var/lib/mysql
+      - ./ssl:/etc/mysql/ssl:ro
+    command:
+      --ssl-ca=/etc/mysql/ssl/ca.pem
+      --ssl-cert=/etc/mysql/ssl/server-cert.pem
+      --ssl-key=/etc/mysql/ssl/server-key.pem
+      --require_secure_transport=ON
+    ports:
+      - "3312:3306"
+    networks:
+      - mysql-replication
+
+  proxysql:
+    image: proxysql/proxysql:latest
+    container_name: proxysql
+    ports:
+      - "6033:6033"  # MySQL client connections
+      - "6032:6032"  # Admin interface
+    networks:
+      - mysql-replication
+
+networks:
+  mysql-replication:
+    external: true

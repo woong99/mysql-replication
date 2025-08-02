@@ -1,0 +1,24 @@
+services:
+  single-mysql:
+    image: mysql:9.4.0
+    container_name: single-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: potatowoong_db
+    volumes:
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./data:/var/lib/mysql
+      - ./ssl:/etc/mysql/ssl:ro
+    command:
+      --ssl-ca=/etc/mysql/ssl/ca.pem
+      --ssl-cert=/etc/mysql/ssl/server-cert.pem
+      --ssl-key=/etc/mysql/ssl/server-key.pem
+      --require_secure_transport=ON
+    ports:
+      - "3305:3306"
+    networks:
+      - mysql-replication
+
+networks:
+  mysql-replication:
+    external: true

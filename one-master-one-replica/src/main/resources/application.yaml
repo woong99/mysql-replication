@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: one-master-one-replica
+  datasource:
+    hikari:
+      master:
+        username: root
+        password: 1234
+        #        jdbc-url: jdbc:mysql://localhost:3307/potatowoong_db?useSSL=true&requireSSL=true&verifyServerCertificate=true
+        jdbc-url: jdbc:mysql://one-master-one-replica-master:3306/potatowoong_db?useSSL=true&requireSSL=true&verifyServerCertificate=true
+      replica:
+        username: root
+        password: 1234
+        #        jdbc-url: jdbc:mysql://localhost:3308/potatowoong_db?useSSL=true&requireSSL=true&verifyServerCertificate=true
+        jdbc-url: jdbc:mysql://one-master-one-replica-replica:3306/potatowoong_db?useSSL=true&requireSSL=true&verifyServerCertificate=true
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8081

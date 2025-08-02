@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: single-mysql
+  datasource:
+    hikari:
+      username: root
+      password: 1234
+      jdbc-url: jdbc:mysql://localhost:3305/potatowoong_db?useSSL=true&requireSSL=true&verifyServerCertificate=true
+      #      jdbc-url: jdbc:mysql://single-mysql:3306/potatowoong_db?useSSL=true&requireSSL=true&verifyServerCertificate=true
+      maximum-pool-size: 50
+  jpa:
+    hibernate:
+      ddl-auto: update

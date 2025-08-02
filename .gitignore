@@ -357,3 +357,13 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/macos,gradle,intellij,intellij+iml,intellij+all,windows,java,kotlin
 
 /docker/**
+/one-master-one-replica/docker/mysql/master/data/**
+/one-master-one-replica/docker/mysql/replica/data/**
+/one-master-one-replica/docker/mysql/ssl/**
+/one-master-three-replica/docker/mysql/master/data/**
+/one-master-three-replica/docker/mysql/replica1/data/**
+/one-master-three-replica/docker/mysql/replica2/data/**
+/one-master-three-replica/docker/mysql/replica3/data/**
+/one-master-three-replica/docker/mysql/ssl/**
+/single-mysql/docker/mysql/data/**
+/single-mysql/docker/mysql/ssl/**

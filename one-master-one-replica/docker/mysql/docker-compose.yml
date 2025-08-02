@@ -1,0 +1,43 @@
+services:
+  one-master-one-replica-master:
+    image: mysql:9.4.0
+    container_name: one-master-one-replica-master
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: potatowoong_db
+    volumes:
+      - ./master/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./master/data:/var/lib/mysql
+      - ./ssl:/etc/mysql/ssl:ro
+    command:
+      --ssl-ca=/etc/mysql/ssl/ca.pem
+      --ssl-cert=/etc/mysql/ssl/server-cert.pem
+      --ssl-key=/etc/mysql/ssl/server-key.pem
+      --require_secure_transport=ON
+    ports:
+      - "3307:3306"
+    networks:
+      - mysql-replication
+
+  one-master-one-replica-replica:
+    image: mysql:9.4.0
+    container_name: one-master-one-replica-replica
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+    volumes:
+      - ./replica/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./replica/data:/var/lib/mysql
+      - ./ssl:/etc/mysql/ssl:ro
+    command:
+      --ssl-ca=/etc/mysql/ssl/ca.pem
+      --ssl-cert=/etc/mysql/ssl/server-cert.pem
+      --ssl-key=/etc/mysql/ssl/server-key.pem
+      --require_secure_transport=ON
+    ports:
+      - "3308:3306"
+    networks:
+      - mysql-replication
+
+networks:
+  mysql-replication:
+    external: true
